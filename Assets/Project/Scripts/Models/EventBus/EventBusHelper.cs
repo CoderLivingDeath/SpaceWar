@@ -9,7 +9,6 @@ namespace Assets.Project.Scripts.Models.EventBus
     {
         private static Dictionary<Type, List<Type>> s_CashedSubscriberTypes =
             new Dictionary<Type, List<Type>>();
-
         public static List<Type> GetSubscriberTypes(
             IGlobalSubscriber globalSubscriber)
         {

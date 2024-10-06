@@ -10,4 +10,9 @@ namespace Assets.Project.Scripts.Infrastructure.Factory
     {
         T Create();
     }
+
+    public interface IFactory<out T, in Arg>
+    {
+        T Create(Arg arg);
+    }
 }

@@ -305,6 +305,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &260790001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 260790002}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &260790002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260790001}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.69, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 595033276}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &350881867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -370,6 +401,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4172977127043354380, guid: 9bddd3c1be7a2fb4f95afaca3d45f24d, type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 37a242355db3e3a46b71c1806202df4c, type: 2}
+    - target: {fileID: 4172977127043354380, guid: 9bddd3c1be7a2fb4f95afaca3d45f24d, type: 3}
+      propertyPath: StepSize
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4172977127043354380, guid: 9bddd3c1be7a2fb4f95afaca3d45f24d, type: 3}
+      propertyPath: LerpScale
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4172977127043354380, guid: 9bddd3c1be7a2fb4f95afaca3d45f24d, type: 3}
+      propertyPath: ShootPoint
+      value: 
+      objectReference: {fileID: 260790002}
+    - target: {fileID: 4172977127043354380, guid: 9bddd3c1be7a2fb4f95afaca3d45f24d, type: 3}
+      propertyPath: RotationScale
+      value: 0.97
+      objectReference: {fileID: 0}
     - target: {fileID: 4276710389778993941, guid: 9bddd3c1be7a2fb4f95afaca3d45f24d, type: 3}
       propertyPath: m_Name
       value: PlayerShip
@@ -420,7 +471,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8319941173402110547, guid: 9bddd3c1be7a2fb4f95afaca3d45f24d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 260790002}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bddd3c1be7a2fb4f95afaca3d45f24d, type: 3}
 --- !u!1 &519420028
@@ -752,7 +806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3145912048417959382, guid: 3c5470757fbde36419bc1b9299c4a5cf, type: 3}
       propertyPath: m_BodyType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3826686893566206144, guid: 3c5470757fbde36419bc1b9299c4a5cf, type: 3}
       propertyPath: m_Color.b

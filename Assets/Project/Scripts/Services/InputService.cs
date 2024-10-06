@@ -7,9 +7,9 @@ namespace Assets.Project.Scripts.Services
     public class InputService
     {
         private readonly InputActions _actions;
-        private readonly EventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
-        public InputService(InputActions actions, EventBus eventBus)
+        public InputService(InputActions actions, IEventBus eventBus)
         {
             _actions = actions;
             _eventBus = eventBus;
@@ -29,6 +29,7 @@ namespace Assets.Project.Scripts.Services
 
         private void Shoot_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
+            bool dir = obj.ReadValueAsButton();
             _eventBus.RaiseEvent<IPlayerShootHandler>(h => h.HandlePlayerShoot());
         }
 

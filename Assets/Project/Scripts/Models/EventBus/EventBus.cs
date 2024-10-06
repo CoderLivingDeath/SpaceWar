@@ -5,11 +5,10 @@ using UnityEngine;
 
 namespace Assets.Project.Scripts.Models.EventBus
 {
-    public class EventBus
+    public class EventBus : IEventBus
     {
         private Dictionary<Type, SubscribersList<IGlobalSubscriber>> s_Subscribers
             = new Dictionary<Type, SubscribersList<IGlobalSubscriber>>();
-
         public EventBus()
         {
             
