@@ -1,10 +1,12 @@
-﻿using Assets.Project.Scripts.Infrastructure.ChangesInfo;
+﻿using Assets.Project.Scripts.Infrastructure.Changes;
+using Assets.Project.Scripts.Infrastructure.ControllersMapping;
+using Assets.Project.Scripts.Infrastructure.ControllersMapping.Attributes;
 using Assets.Project.Scripts.Services;
 using UnityEngine;
 
 namespace Assets.Project.Scripts.Controllers.MovementController
 {
-
+    [Controller(LifeScopeEnum.Singlton)]
     public class MovementController
     {
         private readonly IMovementService _movementService;
@@ -18,12 +20,11 @@ namespace Assets.Project.Scripts.Controllers.MovementController
 
         public MovementResult Move(MovementContext context)
         {
-            Vector2 moveVector = _movementService.CalculateMoveVector(context.InputVector, context.OldMoveVector, context.LerpScale);
-            Vector2 Offset = _movementService.CalculateOffset(moveVector, context.StepSize, _timeService.DeltaTime, _timeService.TimeScale);
+            Vector2 Offset = _movementService.CalculateOffset(context.Direction, context.StepSize, _timeService.DeltaTime, _timeService.TimeScale);
 
-            RigidBodyChangesInfo chenges = new(r => r.MovePosition(r.position + Offset));
+            var result = new MovementResult(Offset, context);
 
-            return new MovementResult(chenges, moveVector);
+            return result;
         }
     }
 }

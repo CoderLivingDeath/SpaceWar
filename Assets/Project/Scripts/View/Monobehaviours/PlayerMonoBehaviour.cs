@@ -16,68 +16,64 @@ namespace Assets.Project.Scripts.View.MonoBehaviours
 
         [field: SerializeField] public float StepSize = 20f;
 
-        [Range(0, 0.9f)]
-        [field: SerializeField] public float LerpScale = 0.5f;
+        [field: SerializeField] public float LerpScale = 0.9f;
 
         [field: SerializeField] public Space Space = Space.Self;
 
         [field: SerializeField] public float CorrectRotationAngle = -90;
-
-        public BulletShotConfig bullet;
-        public Transform ShootPoint;
-
-        public float speed;
+        [field: SerializeField] public Vector2 SpeedVector;
+        [field: SerializeField] public float Speed;
 
         private IEventBus _eventBus;
 
         private Vector2 _inputMoveVector;
-        private Vector2 _oldMoveVecotor;
 
-        private Vector2 MoveVector;
+        private Vector2 _moveVector;
 
+        private Vector2 _rotationVector;
+        private Vector2 _prevPosition;
         private MovementController _movementController;
 
-        private BulletSpawner _bulletSpawner;
+        public BulletShotConfig config;
+        public BulletSpawner bulletSpawner;
+
+        public Transform BulletSpawnPoint;
 
         [Inject]
-        public void Construct(IEventBus eventBus, MovementController movementController, BulletSpawner bulletSpawner)
+        public void Construct(IEventBus eventBus, MovementController movementController, BulletSpawner spawner)
         {
             _eventBus = eventBus;
             _movementController = movementController;
-            _bulletSpawner = bulletSpawner;
+            bulletSpawner = spawner;
         }
 
         private void MoveProcess(Vector2 direction)
         {
             Vector2 currentPosition = Rigidbody.position;
-            Vector2 currentVelocity = Rigidbody.velocity;
-            Vector2 inputVector = _inputMoveVector;
-            Vector2 oldMoveVector = _oldMoveVecotor;
-            float gravityScale = Rigidbody.gravityScale;
-            float lerpScale = Mathf.Clamp(LerpScale, 0, 1f);
+            Vector2 inputVector = _moveVector;
             float stepSize = StepSize;
 
-            MovementContext context = new(currentPosition, currentVelocity, inputVector, oldMoveVector, gravityScale, lerpScale, StepSize);
+            MovementContext context = new(currentPosition, inputVector, StepSize);
 
             MovementResult result = _movementController.Move(context);
-            result.Changes.ApplyChanges(Rigidbody);
 
-            speed = result.NewMoveVector.magnitude - _oldMoveVecotor.magnitude;
-            _oldMoveVecotor = result.NewMoveVector;
-
+            Rigidbody.MovePosition(Rigidbody.position + result.NewOffset);
         }
 
-        public void RotationProcess(Vector2 To, float angleCorrect)
+        private void RotationProcess(Vector2 To, float angleCorrect)
         {
             Vector2 direction = (Vector2)transform.position - (Vector2)transform.position + To.normalized;
             var angle = Mathf.Atan2(To.y, To.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle + angleCorrect);
-
         }
 
-        private void shootProcces()
+        private void shootProcces(Vector2 direction)
         {
-            _bulletSpawner.Spawn(bullet, ShootPoint.position, transform.rotation);
+            var bullet = bulletSpawner.Spawn(config, BulletSpawnPoint.position, this.transform.rotation);
+            var BulletMonoBehaviour = bullet.GetComponent<BulletMonobehaviour>();
+            var BulletRigidBody = bullet.GetComponent<Rigidbody2D>();
+            BulletMonoBehaviour.MovementDirection = direction;
+            //BulletMonoBehaviour.Vecloity = transform.up;
         }
 
         public void HandlePlayerMovement(Vector2 direction)
@@ -101,15 +97,26 @@ namespace Assets.Project.Scripts.View.MonoBehaviours
 
         public void HandlePlayerShoot()
         {
-            shootProcces();
+            shootProcces(transform.up);
         }
 
         #region Unity methods
 
         private void FixedUpdate()
         {
+            SpeedVector = (Vector2)transform.position - _prevPosition;
+            Speed = SpeedVector.magnitude;
+
             MoveProcess(_inputMoveVector);
-            RotationProcess(_oldMoveVecotor, CorrectRotationAngle);
+
+            _moveVector = Vector2.Lerp(_inputMoveVector, _moveVector, LerpScale);
+
+            if (_moveVector.magnitude > 0.1f)
+                _rotationVector = _moveVector.normalized;
+
+            RotationProcess(_rotationVector, CorrectRotationAngle);
+
+            _prevPosition = transform.position;
         }
 
         private void OnEnable()
@@ -124,13 +131,6 @@ namespace Assets.Project.Scripts.View.MonoBehaviours
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position, (Vector2)transform.position + _oldMoveVecotor.normalized);
-            Gizmos.DrawSphere((Vector2)transform.position + _oldMoveVecotor.normalized, 0.08f);
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, (Vector2)transform.position + _oldMoveVecotor);
-            Gizmos.DrawSphere((Vector2)transform.position + _oldMoveVecotor, 0.05f);
         }
         #endregion
     }

@@ -8,5 +8,6 @@ namespace Assets.Project.Scripts.Controllers.ShootController
         public GameObject Prefab;
         public float BaseDamage;
         public float InitialSpeed;
+        public float SizeScale;
     }
 }

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Assets.Project.Scripts.Infrastructure.ControllersMapping;
+using System;
 
 namespace Assets.Project.Scripts.Infrastructure
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ShootControllerTargetAttribute : Attribute
+    public class ShootControllerAttribute : Attribute
     {
         public Type Target { get; set; }
-        public ShootControllerTargetAttribute(Type target)
+        public ShootControllerAttribute(Type target, LifeScopeEnum lifeScope = LifeScopeEnum.Singlton, bool lazy = true)
         {
             Target = target;
         }

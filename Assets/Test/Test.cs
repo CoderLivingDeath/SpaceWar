@@ -1,16 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    public Vector2 vector1;
-    public Vector2 vector2;
-    public float scale;
+    public Transform point;
 
-    // Update is called once per frame
-    void Update()
+    public Vector2 light;
+
+    public Vector2 reflect;
+
+    public Vector2 SurfaceNormal;
+
+    private void Update()
     {
-        Debug.Log(Vector2.Lerp(vector1, vector2, scale));
+        light = transform.position - point.position;
+        reflect = Vector2.Reflect(light.normalized, SurfaceNormal);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + SurfaceNormal);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(point.position, transform.position);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(point.position, (Vector2)point.position + reflect.normalized);
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + reflect);
     }
 }

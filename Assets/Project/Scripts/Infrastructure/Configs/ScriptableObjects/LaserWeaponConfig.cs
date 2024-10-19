@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Project.Scripts.Infrastructure.Configs.ScriptableObjects
 {
-    internal class LaserWeaponConfig
+    public class LaserWeaponConfig
     {
     }
 }

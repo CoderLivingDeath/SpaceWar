@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Assets.Project.Scripts.Infrastructure.Configs.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "LaserShotConfig", menuName = "Project/Weapon/LaserShotConfig", order = 1)]
-    public class LaserShotConfig
+    public class LaserShotConfig : ScriptableObject
     {
         public float BaseDamage;
     }
